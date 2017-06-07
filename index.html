@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+
+    <title>Patient Log</title>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="  crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.10/handlebars.min.js"></script>
+    
+    <style>
+      button{
+        margin: 5px;
+      }
+      
+      td{
+        padding: 3px;
+      }
+      
+    </style>
+    
+  </head>
+
+  <body>
+
+    <h1>Patient Test</h1>
+        
+    <button type="button" id="addPatient">Show Form</button><br />
+    
+    <div id="main"></div>
+    <br /><button id="newPatient">Add Patient</button>
+    
+    
+    <br /><h2>Patient List</h2>
+    <table>
+      <div id="main2">
+      </div>
+    </table>
+    
+    <script id="formTemplate" type="text/x-handlebars-template">
+      <h2>New Patient Form</h2>
+      
+      <label>Name:</label>
+      <input id="patientName" type="text"/>
+      <label>Age:</label>
+      <input id="patientAge" type="number"/>
+
+    </script>
+    
+    <script id="patientTemplate" type="text/x-handlebars-template">    
+        <tr>
+          {{#each names}}
+          <td>{{{name}}}{{{age}}}
+          {{/each}}
+        </tr>
+    </script>
+    
+    <script type="text/javascript">
+      var formTemplate = Handlebars.compile( $('#formTemplate').html() );
+      
+      $('#addPatient').on( 'click', addPatient );
+      $('#newPatient').on( 'click', newPatient );
+      
+      function addPatient( ) {
+        $('#main').html( formTemplate );
+      }
+      
+      function newPatient( ) {
+        var quoteInfo = document.getElementById("patientTemplate").innerHTML;
+        var template = Handlebars.compile(quoteInfo);
+      
+        var patientName = $("#patientName").val();
+        var patientAge = $("#patientAge").val();
+        
+        $("#patientName").val('');
+        $("#patientAge").val('');        
+        
+        var nameData = template({
+          names: [
+            {name: "<strong>Name:</strong> " + patientName},
+            {age: "<strong>Age:</strong> " + patientAge},                                    
+          ]
+        });
+      
+        $("#main2").append(nameData);
+      };
+    </script>
+    
+  </body>
+</html>
